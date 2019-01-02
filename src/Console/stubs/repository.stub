@@ -1,0 +1,16 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyFullModelClass;
+use TheRezor\LaraCrud\Repositories\BaseRepository;
+
+class DummyClass extends BaseRepository
+{
+    public function __construct(DummyModelClass $model)
+    {
+        $this->model = $model;
+
+        parent::__construct();
+    }
+}

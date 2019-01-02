@@ -1,0 +1,51 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyFullRepositoryClass;
+use DummyFullFilterFormClass;
+use DummyFullFormClass;
+use TheRezor\LaraCrud\Fields\{Field};
+use TheRezor\LaraCrud\Http\Crud\BaseCrud;
+
+class DummyClass extends BaseCrud
+{
+    public function __construct(DummyRepositoryClass $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function getCrudName(): string
+    {
+        return 'DummyCrudName';
+    }
+
+    public function getRouteName(): string
+    {
+        return 'DummyCrudRoute';
+    }
+
+    public function getListFields(): array
+    {
+        return [
+DummyFields
+        ];
+    }
+
+    public function getShowFields(): array
+    {
+        return [
+DummyFields
+        ];
+    }
+
+    public function getCreateFormClass(): ?string
+    {
+        return DummyFormClass::class;
+    }
+
+    public function getFilterFormClass(): ?string
+    {
+        return DummyFilterFormClass::class;
+    }
+}

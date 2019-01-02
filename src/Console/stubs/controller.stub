@@ -1,0 +1,14 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyFullCrudClass;
+use TheRezor\LaraCrud\Http\Controllers\BaseCrudController;
+
+class DummyClass extends BaseCrudController
+{
+    public function __construct(DummyCrudClass $crud)
+    {
+        $this->crud = $crud;
+    }
+}
