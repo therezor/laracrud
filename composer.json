@@ -17,5 +17,12 @@
     "psr-4": {
       "TheRezor\\LaraCrud\\": "src/"
     }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "TheRezor\\LaraCrud\\LaraCrudServiceProvider"
+      ]
+    }
   }
 }
