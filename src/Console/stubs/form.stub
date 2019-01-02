@@ -1,0 +1,13 @@
+<?php
+
+namespace DummyNamespace;
+
+use TheRezor\LaraCrud\Forms\Form as BaseForm;
+
+class DummyClass extends BaseForm
+{
+    public function buildForm()
+    {
+DummyFields
+    }
+}

@@ -1,0 +1,13 @@
+<?php
+
+namespace DummyNamespace;
+
+use TheRezor\LaraCrud\Forms\FilterForm as BaseFilterForm;
+
+class DummyClass extends BaseFilterForm
+{
+    public function buildForm()
+    {
+DummyFields
+    }
+}
