@@ -8,10 +8,11 @@ use TheRezor\LaraCrud\Fields\Contracts\Field;
 use TheRezor\LaraCrud\Fields\Traits\Callbackable;
 use TheRezor\LaraCrud\Fields\Traits\HasMeta;
 use TheRezor\LaraCrud\Fields\Traits\Sortable;
+use TheRezor\LaraCrud\Fields\Traits\TranslateValue;
 
 class BaseField implements Field
 {
-    use Callbackable, Sortable, HasMeta;
+    use Callbackable, Sortable, HasMeta, TranslateValue;
 
     protected $name;
 
@@ -117,16 +118,5 @@ class BaseField implements Field
         ])->render();
 
         return new HtmlString($rendered);
-    }
-
-    public function translateValue($prefix)
-    {
-        $prefix = str_finish($prefix, '.');
-
-        $this->valueCallback = function ($value, $entity, Field $field) use ($prefix) {
-            return trans($prefix . $value);
-        };
-
-        return $this;
     }
 }
