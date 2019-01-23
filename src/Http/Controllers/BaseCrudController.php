@@ -206,7 +206,7 @@ abstract class BaseCrudController extends Controller
 
         $this->crud->afterDestroy($entity);
 
-        return redirect()->back()
+        return redirect()->route($this->crud->getRouteByMethod('index'))
             ->with('flash_success', trans('laracrud::crud.deleted'));
     }
 }
