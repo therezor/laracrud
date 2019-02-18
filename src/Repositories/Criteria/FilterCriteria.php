@@ -26,14 +26,14 @@ class FilterCriteria implements Criteria
         return $builder->where(function (Builder $query) {
             foreach ($this->filters as $column => $value) {
                 if ($this->hasCallback($column)) {
-                    $query = call_user_func(
+                    call_user_func(
                         $this->callbacks[$column], $query, $value, $this
                     );
 
                     continue;
                 }
 
-                $query = $this->addLike($column, $value, $query);
+                $query->where($column, $value, $query);
             }
         });
     }
@@ -41,6 +41,24 @@ class FilterCriteria implements Criteria
     public function addCallback($column, callable $callback): self
     {
         $this->callbacks[$column] = $callback;
+
+        return $this;
+    }
+
+    public function whereIn($column): self
+    {
+        $this->callbacks[$column] = function (Builder $query, $value) use ($column) {
+            return $query->whereIn($column, $value);
+        };
+
+        return $this;
+    }
+
+    public function whereLike($column): self
+    {
+        $this->callbacks[$column] = function (Builder $query, $value, FilterCriteria $criteria) use ($column) {
+            return $criteria->addLike($column, $value, $query);
+        };
 
         return $this;
     }
