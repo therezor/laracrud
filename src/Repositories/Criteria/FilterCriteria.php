@@ -26,14 +26,14 @@ class FilterCriteria implements Criteria
         return $builder->where(function (Builder $query) {
             foreach ($this->filters as $column => $value) {
                 if ($this->hasCallback($column)) {
-                    $query = call_user_func(
+                    call_user_func(
                         $this->callbacks[$column], $query, $value, $this
                     );
 
                     continue;
                 }
 
-                $query = $this->addLike($column, $value, $query);
+                $query->where($column, $value, $query);
             }
         });
     }
