@@ -4,5 +4,5 @@ namespace TheRezor\LaraCrud\Fields;
 
 class DateTime extends Date
 {
-    protected $format = 'd.m.Y H:i:s';
+    protected $format = 'Y-m-d H:i:s';
 }

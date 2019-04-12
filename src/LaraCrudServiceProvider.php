@@ -33,7 +33,6 @@ class LaraCrudServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../resources/views'     => base_path('resources/views/vendor/laracrud'),
-            __DIR__ . '/../config/laracrud.php' => config_path('laracrud.php'),
         ]);
 
         $this->publishes([

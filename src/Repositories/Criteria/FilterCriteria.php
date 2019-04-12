@@ -3,6 +3,7 @@
 namespace TheRezor\LaraCrud\Repositories\Criteria;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\PostgresConnection;
 use TheRezor\LaraCrud\Repositories\Contracts\Criteria;
 use TheRezor\LaraCrud\Repositories\Contracts\Repository;
 
@@ -65,7 +66,13 @@ class FilterCriteria implements Criteria
 
     protected function addLike(string $column, $value, Builder $builder): Builder
     {
-        return $builder->where($column, 'like', '%' . $this->escapeLike($value) . '%');
+        $operator = 'like';
+
+        if ($builder->getConnection() instanceof PostgresConnection) {
+            $operator = 'ilike';
+        }
+
+        return $builder->where($column, $operator, '%' . $this->escapeLike($value) . '%');
     }
 
     protected function escapeLike(string $column)

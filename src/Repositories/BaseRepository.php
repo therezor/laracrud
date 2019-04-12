@@ -103,6 +103,11 @@ abstract class BaseRepository implements RepositoryContract
         return $this->model()->newInstance();
     }
 
+    /**
+     * @param CriteriaContract $criteria
+     *
+     * @return $this
+     */
     public function prependCriteria(CriteriaContract $criteria): self
     {
         $this->criteria->prepend($criteria);
@@ -110,6 +115,11 @@ abstract class BaseRepository implements RepositoryContract
         return $this;
     }
 
+    /**
+     * @param CriteriaContract $criteria
+     *
+     * @return $this
+     */
     public function pushCriteria(CriteriaContract $criteria): self
     {
         $this->criteria->push($criteria);
@@ -117,6 +127,11 @@ abstract class BaseRepository implements RepositoryContract
         return $this;
     }
 
+    /**
+     * @param string|CriteriaContract $criteria
+     *
+     * @return $this
+     */
     public function popCriteria($criteria): self
     {
         $this->criteria = $this->criteria->reject(function ($item) use ($criteria) {
@@ -138,6 +153,11 @@ abstract class BaseRepository implements RepositoryContract
         return $this->criteria;
     }
 
+    /**
+     * @param bool $status
+     *
+     * @return $this
+     */
     public function skipCriteria($status = true): self
     {
         $this->skipCriteria = $status;
@@ -145,6 +165,9 @@ abstract class BaseRepository implements RepositoryContract
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function resetCriteria(): self
     {
         $this->criteria = new Collection();
