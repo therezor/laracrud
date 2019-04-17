@@ -7,7 +7,6 @@ use Illuminate\Routing\Controller;
 use TheRezor\LaraCrud\Forms\FilterForm;
 use TheRezor\LaraCrud\Http\Controllers\Traits\Routable;
 use TheRezor\LaraCrud\Http\Crud\BaseCrud;
-use TheRezor\LaraCrud\Repositories\Contracts\Repository;
 use FormBuilder;
 
 abstract class BaseCrudController extends Controller
