@@ -7,10 +7,8 @@ use TheRezor\LaraCrud\Repositories\BaseRepository;
 
 class DummyClass extends BaseRepository
 {
-    public function __construct(DummyModelClass $model)
+    public function modelClass()
     {
-        $this->model = $model;
-
-        parent::__construct();
+        return DummyModelClass::class;
     }
 }

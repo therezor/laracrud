@@ -20,6 +20,6 @@ class WithCountCriteria implements Criteria
 
     public function apply(Builder $builder, Repository $repository): Builder
     {
-        return $this->withCount(mb_substr($this->field->getName(), 0, -6));
+        return $builder->withCount(mb_substr($this->field->getName(), 0, -6));
     }
 }

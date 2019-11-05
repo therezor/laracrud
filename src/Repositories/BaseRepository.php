@@ -2,22 +2,30 @@
 
 namespace TheRezor\LaraCrud\Repositories;
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use TheRezor\LaraCrud\Repositories\Contracts\Criteria as CriteriaContract;
 use TheRezor\LaraCrud\Repositories\Contracts\Repository as RepositoryContract;
+use TheRezor\LaraCrud\Repositories\Traits\HasCriteria;
 
 abstract class BaseRepository implements RepositoryContract
 {
+    use HasCriteria;
+
+    /**
+     * @var Container
+     */
+    protected $container;
+
+    /** @var Model */
     protected $model;
 
     /**
-     * @var Collection
+     * Specify Model class name
+     *
+     * @return string
      */
-    protected $criteria;
-
-    protected $skipCriteria = false;
+    abstract public function modelClass(): string;
 
     /**
      * new Model instance
@@ -29,19 +37,21 @@ abstract class BaseRepository implements RepositoryContract
         return $this->model;
     }
 
-    public function __construct()
+    public function __construct(Container $container)
     {
+        $this->container = $container;
         $this->resetCriteria();
+        $this->buildModel();
     }
 
     public function get($columns = ['*'])
     {
-        return $this->newQuery()->get();
+        return $this->newQuery()->get($columns);
     }
 
     public function first($columns = ['*'])
     {
-        return $this->newQuery()->first();
+        return $this->newQuery()->first($columns);
     }
 
     public function paginate($perPage = 10, $columns = ['*'], $pageName = 'page', $page = null)
@@ -98,81 +108,33 @@ abstract class BaseRepository implements RepositoryContract
         return $this->newQuery()->where($field, '=', $value)->firstOrFail($columns);
     }
 
+    public function sum($column)
+    {
+        return $this->newQuery()->sum($column);
+    }
+
+    public function count($columns = '*')
+    {
+        return $this->newQuery()->count($columns);
+    }
+
+    public function cursor()
+    {
+        return $this->newQuery()->cursor();
+    }
+
     public function newModel(): Model
     {
         return $this->model()->newInstance();
     }
 
-    /**
-     * @param CriteriaContract $criteria
-     *
-     * @return $this
-     */
-    public function prependCriteria(CriteriaContract $criteria): self
+    public function buildModel($rebuild = false)
     {
-        $this->criteria->prepend($criteria);
+        if ($rebuild || !$this->model) {
+            $this->model = $this->container->make($this->modelClass());
+        }
 
-        return $this;
-    }
-
-    /**
-     * @param CriteriaContract $criteria
-     *
-     * @return $this
-     */
-    public function pushCriteria(CriteriaContract $criteria): self
-    {
-        $this->criteria->push($criteria);
-
-        return $this;
-    }
-
-    /**
-     * @param string|CriteriaContract $criteria
-     *
-     * @return $this
-     */
-    public function popCriteria($criteria): self
-    {
-        $this->criteria = $this->criteria->reject(function ($item) use ($criteria) {
-            if (is_object($item) && is_string($criteria)) {
-                return get_class($item) === $criteria;
-            }
-            if (is_string($item) && is_object($criteria)) {
-                return $item === get_class($criteria);
-            }
-
-            return get_class($item) === get_class($criteria);
-        });
-
-        return $this;
-    }
-
-    public function getCriteria(): Collection
-    {
-        return $this->criteria;
-    }
-
-    /**
-     * @param bool $status
-     *
-     * @return $this
-     */
-    public function skipCriteria($status = true): self
-    {
-        $this->skipCriteria = $status;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function resetCriteria(): self
-    {
-        $this->criteria = new Collection();
-
-        return $this;
+        return $this->model;
     }
 
     protected function newQuery(): Builder
