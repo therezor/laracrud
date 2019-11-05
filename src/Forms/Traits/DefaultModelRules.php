@@ -3,13 +3,14 @@
 namespace TheRezor\LaraCrud\Forms\Traits;
 
 use TheRezor\LaraCrud\Eloquent\Model\Contracts\HasValidation;
+use Illuminate\Support\Arr;
 
 trait DefaultModelRules
 {
     protected function getModelRules($name, $model)
     {
         if ($model instanceof HasValidation) {
-            return array_get($model->getValidationRules(), $name, []);
+            return Arr::get($model->getValidationRules(), $name, []);
         }
 
         return [];

@@ -2,14 +2,14 @@
 
 namespace TheRezor\LaraCrud\Http\Crud;
 
+use Illuminate\Support\Str;
 use TheRezor\LaraCrud\Http\Crud\Traits\Hookable;
-use TheRezor\LaraCrud\Repositories\Contracts\Criteria;
+use TheRezor\LaraCrud\Http\Crud\Traits\Sortable;
 use TheRezor\LaraCrud\Repositories\Contracts\Repository;
-use TheRezor\LaraCrud\Repositories\Criteria\OrderCriteria;
 
 abstract class BaseCrud
 {
-    use Hookable;
+    use Sortable, Hookable;
 
     protected $repository;
 
@@ -19,20 +19,6 @@ abstract class BaseCrud
      * @var int
      */
     public $perPage = 20;
-
-    /**
-     * Default column for sorting
-     *
-     * @var string
-     */
-    public $defaultColumn = 'id';
-
-    /**
-     * Default direction for sorting
-     *
-     * @var string
-     */
-    public $defaultDirection = 'desc';
 
     /**
      * Available route methods
@@ -95,7 +81,7 @@ abstract class BaseCrud
 
     public function getViewByMethod(string $method): string
     {
-        return str_finish($this->getViewPrefix(), '.') . $method;
+        return Str::finish($this->getViewPrefix(), '.') . $method;
     }
 
     public function getEntityActions(): array
@@ -118,11 +104,6 @@ abstract class BaseCrud
             return null;
         }
 
-        return str_finish($this->getRouteName(), '.') . $method;
-    }
-
-    public function getOrderCriteria(): Criteria
-    {
-        return new OrderCriteria($this->getListFields(), request());
+        return Str::finish($this->getRouteName(), '.') . $method;
     }
 }

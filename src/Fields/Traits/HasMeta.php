@@ -2,6 +2,8 @@
 
 namespace TheRezor\LaraCrud\Fields\Traits;
 
+use Illuminate\Support\Arr;
+
 trait HasMeta
 {
     protected $meta = [];
@@ -9,7 +11,7 @@ trait HasMeta
     public function meta($value, $key = null): self
     {
         if (null !== $key) {
-            array_set($this->meta, $key, $value);
+            Arr::set($this->meta, $key, $value);
 
             return $this;
         }
@@ -22,7 +24,7 @@ trait HasMeta
     public function getMeta($key = null)
     {
         if (null !== $key) {
-            return array_get($this->meta, $key);
+            return Arr::get($this->meta, $key);
         }
 
         return $this->meta;

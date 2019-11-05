@@ -11,7 +11,7 @@ class CrudControllerMakeCommand extends GeneratorCommand
 {
     use ParseClass;
 
-    protected $name = 'make:crud:controller';
+    protected $name = 'make:laracrud:controller';
 
     protected $description = 'Create a new crud controller';
 

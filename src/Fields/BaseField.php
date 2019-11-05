@@ -66,6 +66,13 @@ class BaseField implements Field
     {
         $value = $this->resolveAttribute($entity, $this->name);
 
+        $value = $this->transformValue($value, $entity);
+
+        return $value;
+    }
+
+    public function transformValue($value, $entity = null)
+    {
         if (is_callable($this->valueCallback)) {
             $value = call_user_func(
                 $this->valueCallback, $value, $entity, $this

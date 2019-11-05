@@ -33,8 +33,8 @@ class FilterForm extends BaseForm
             $options['wrapper']['class'] = config('laravel-form-builder.defaults.wrapper_class') . ' col';
         }
 
-        if(request()->has($name)) {
-            $options['default_value'] = request()->get($name);
+        if ($this->request->has($name)) {
+            $options['default_value'] = $this->request->get($name);
         }
 
         parent::setupFieldOptions($name, $options);

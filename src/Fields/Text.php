@@ -8,8 +8,12 @@ class Text extends BaseField
 {
     public function __construct(string $name)
     {
-        $this->valueCallback = function ($value, $entity, $field)  {
-            return new HtmlString(nl2br(e($value)));
+        $this->valueCallback = function ($value, $entity, $field) {
+            if ($value) {
+                return new HtmlString(nl2br(e($value)));
+            }
+
+            return $value;
         };
 
         parent::__construct($name);

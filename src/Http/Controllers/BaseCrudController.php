@@ -2,8 +2,10 @@
 
 namespace TheRezor\LaraCrud\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use TheRezor\LaraCrud\Fields\Collections\FieldCollection;
 use TheRezor\LaraCrud\Forms\FilterForm;
 use TheRezor\LaraCrud\Http\Controllers\Traits\Routable;
 use TheRezor\LaraCrud\Http\Crud\BaseCrud;
@@ -23,9 +25,13 @@ abstract class BaseCrudController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $this->crud->getRepository()->pushCriteria($this->crud->getOrderCriteria());
+        $fields = $this->crud->getListFields();
+
+        $sortFields = (new FieldCollection($fields))->onlySortable();
+
+        $this->crud->getRepository()->pushCriteria($this->crud->getSortCriteria($sortFields, $request));
 
         $emptyEntity = $this->crud->getRepository()->newModel();
 
@@ -41,8 +47,6 @@ abstract class BaseCrudController extends Controller
         }
 
         $entities = $this->crud->getRepository()->paginate($this->crud->perPage);
-
-        $fields = $this->crud->getListFields();
 
         return view($this->crud->getViewByMethod('index'))
             ->with('crud', $this->crud)

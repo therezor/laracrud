@@ -24,4 +24,11 @@ class FieldCollection extends Collection
 
         return $attributes;
     }
+
+    public function firstByName($name)
+    {
+        return $this->first(function (Field $field) use ($name) {
+            return $field->getName() === $name;
+        });
+    }
 }

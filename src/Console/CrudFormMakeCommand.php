@@ -14,7 +14,7 @@ class CrudFormMakeCommand extends GeneratorCommand
 {
     use ParseClass;
 
-    protected $name = 'make:crud:form';
+    protected $name = 'make:laracrud:form';
 
     protected $description = 'Create a new crud form';
 

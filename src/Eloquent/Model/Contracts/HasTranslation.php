@@ -7,7 +7,7 @@ interface HasTranslation
     /**
      * Get prefix for attribute name translations
      *
-     * @return array
+     * @return string
      */
     public function getTranslationPrefix(): string;
 }

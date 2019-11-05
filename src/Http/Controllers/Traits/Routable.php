@@ -76,7 +76,14 @@ trait Routable
                 if ($parent) {
                     $breadcrumbs->parent($parent);
                 }
-                $breadcrumbs->push('#' . $id, route($show, $id));
+
+                $name = '#' . $id;
+
+                if (method_exists($this->crud, 'resolveBreadCrumbName')) {
+                    $name = $this->crud->resolveBreadCrumbName($id);
+                }
+
+                $breadcrumbs->push($name, route($show, $id));
             });
         }
     }

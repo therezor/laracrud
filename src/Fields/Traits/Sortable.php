@@ -2,13 +2,25 @@
 
 namespace TheRezor\LaraCrud\Fields\Traits;
 
+use Illuminate\Http\Request;
+use TheRezor\LaraCrud\Repositories\Contracts\SortableCriteria;
+use TheRezor\LaraCrud\Repositories\Criteria\OrderByCriteria;
+
 trait Sortable
 {
     protected $sortable = false;
 
-    public function sortable(bool $sortable = true): self
+    protected $sortDirection = null;
+
+    protected $defaultSortOrder = 'desc';
+
+    /** @var SortableCriteria */
+    protected $sortableCriteria = null;
+
+    public function sortable(bool $sortable = true, SortableCriteria $criteria = null): self
     {
         $this->sortable = $sortable;
+        $this->sortableCriteria = $criteria;
 
         return $this;
     }
@@ -18,39 +30,47 @@ trait Sortable
         return $this->sortable;
     }
 
-    public function sortableDirection()
+    public function defaultSortOrder($direction)
     {
-        if (request()->get('sort') !== $this->name) {
-            return null;
-        }
-
-        $direction = request()->get('direction');
-
-        return in_array($direction, ['asc', 'desc'], true) ? $direction : null;
+        $this->defaultSortOrder = $direction;
     }
 
-    public function sortableUrl()
+    public function sortableUrl(Request $request, $except = ['sort', 'direction', 'page'])
     {
         if (!$this->sortable) {
             return null;
         }
 
-        $direction = $this->sortableDirection();
+        $requestParams = $request->except($except);
 
-        $direction = ('desc' === $direction ? 'asc' : 'desc');
-
-        return $this->buildSortableUrl($this->name, $direction);
-    }
-
-    protected function buildSortableUrl($sort, $direction)
-    {
-        $requestParams = request()->except('sort', 'direction', 'page');
+        $direction = $this->getSortDirection() ?? $this->defaultSortOrder;
 
         $queryString = http_build_query(array_merge($requestParams, [
-            'sort'      => $sort,
-            'direction' => $direction,
+            'sort'      => $this->getName(),
+            'direction' => ('desc' === $direction ? 'asc' : 'desc'),
         ]));
 
-        return url(request()->path() . '?' . $queryString);
+        return url($request->path() . '?' . $queryString);
+    }
+
+    public function setSortDirection($direction)
+    {
+        $this->sortDirection = $direction;
+    }
+
+    public function getSortDirection()
+    {
+        return $this->sortDirection;
+    }
+
+    public function getSortableCriteria(): SortableCriteria
+    {
+        if (!$this->sortableCriteria) {
+            $this->sortableCriteria = new OrderByCriteria($this->getName(), $this->sortDirection);
+        }
+
+        $this->sortableCriteria->setDirection($this->sortDirection);
+
+        return $this->sortableCriteria;
     }
 }

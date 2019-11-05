@@ -3,12 +3,13 @@
 namespace TheRezor\LaraCrud\Fields\Traits;
 
 use TheRezor\LaraCrud\Fields\BaseField;
+use Illuminate\Support\Str;
 
 trait TranslateValue
 {
     public function translateValue($prefix)
     {
-        $prefix = str_finish($prefix, '.');
+        $prefix = Str::finish($prefix, '.');
 
         $this->valueCallback = function ($value, $entity, BaseField $field) use ($prefix) {
             if (null === $value) {

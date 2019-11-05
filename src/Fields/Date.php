@@ -23,9 +23,14 @@ class Date extends BaseField
                 $value = Carbon::parse($value);
             }
 
-            return $value->format($this->format);
+            return $value->format($this->getDateFormat());
         };
 
         parent::__construct($name);
+    }
+
+    protected function getDateFormat()
+    {
+        return $this->format;
     }
 }

@@ -11,7 +11,7 @@ class CrudRepositoryMakeCommand extends GeneratorCommand
 {
     use ParseClass;
 
-    protected $name = 'make:crud:repository';
+    protected $name = 'make:laracrud:repository';
 
     protected $description = 'Create a new repository';
 

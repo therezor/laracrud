@@ -13,7 +13,7 @@ class CrudMakeCommand extends GeneratorCommand
 {
     use ParseClass;
 
-    protected $name = 'make:crud';
+    protected $name = 'make:laracrud:crud';
 
     protected $description = 'Create a crud resources';
 

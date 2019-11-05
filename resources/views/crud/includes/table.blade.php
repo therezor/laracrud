@@ -5,9 +5,9 @@
             <th class="{{ $field->getMeta('list.class') }}">
                 {{ $field->resolveLabel($emptyEntity) }}
                 @if($field->isSortable())
-                    <a href="{{ $field->sortableUrl() }}">
-                        @if($field->sortableDirection())
-                            <i class="fa fa-sort-{{ $field->sortableDirection() }}"></i>
+                    <a href="{{ $field->sortableUrl(request()) }}">
+                        @if($field->getSortDirection())
+                            <i class="fa fa-sort-{{ $field->getSortDirection() }}"></i>
                         @else
                             <i class="fa fa-sort"></i>
                         @endif
